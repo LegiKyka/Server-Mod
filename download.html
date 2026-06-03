@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kykas Discs — Download</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0b0f;
+  --surface: #13131a;
+  --surface-2: #1c1c26;
+  --border: #2a2a38;
+  --border-soft: #1f1f2c;
+  --text: #ede9e0;
+  --text-muted: #7a7690;
+  --text-dim: #4a4760;
+  --accent: #e8b86d;
+  --accent-dark: #c9973a;
+  --accent-glow: rgba(232,184,109,0.15);
+  --success: #6dbf8a;
+  --warning: #e8b86d;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(232,184,109,0.035) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 85% 90%, rgba(90,70,160,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  max-width: 860px;
+  width: 100%;
+  padding: 0 24px 60px;
+  position: relative;
+  z-index: 1;
+  animation: rise 0.5s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── HEADER ─── */
+header {
+  text-align: center;
+  padding: 52px 0 36px;
+}
+
+.disc-wrap {
+  width: 80px; height: 80px;
+  margin: 0 auto 22px;
+  position: relative;
+}
+
+.disc-wrap svg {
+  animation: spinSlow 18s linear infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.disc-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,184,109,0.12) 0%, transparent 65%);
+}
+
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.header-sub {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.header-sub span {
+  display: inline-block;
+  width: 3px; height: 3px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 8px 2px;
+}
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* ─── TABS ─── */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 14px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.tab-btn:hover { color: var(--text); background: var(--border-soft); }
+
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--surface);
+}
+
+/* ─── DOC CONTENT ─── */
+.tab-pane {
+  display: none;
+  padding: 32px 38px 28px;
+  max-height: 500px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tab-pane.active { display: block; }
+
+.tab-pane::-webkit-scrollbar { width: 5px; }
+.tab-pane::-webkit-scrollbar-track { background: transparent; }
+.tab-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.doc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.doc-meta {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.doc-section {
+  margin-bottom: 26px;
+}
+
+.doc-section h3 {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.doc-section p {
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  line-height: 1.85;
+}
+
+.doc-section p strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.doc-section ul, .doc-section ol {
+  padding-left: 22px;
+  margin-bottom: 10px;
+}
+
+.doc-section li {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.85;
+  margin-bottom: 5px;
+}
+
+.alert-box {
+  background: rgba(232,184,109,0.07);
+  border: 1px solid rgba(232,184,109,0.22);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.alert-box p {
+  color: rgba(232,184,109,0.9) !important;
+  margin: 0 !important;
+  font-size: 0.76rem !important;
+}
+
+.caps {
+  text-transform: uppercase;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.01em;
+  line-height: 1.75 !important;
+}
+
+/* ─── SCROLL FADE ─── */
+.scroll-hint {
+  text-align: center;
+  padding: 8px 0 4px;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border-soft);
+}
+
+/* ─── AGREEMENT ─── */
+.agree-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 34px 32px;
+}
+
+.agree-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.check-row:hover { border-color: var(--border); background: var(--surface-2); }
+.check-row.checked { border-color: rgba(232,184,109,0.35); background: rgba(232,184,109,0.04); }
+
+.check-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 17px; height: 17px;
+  min-width: 17px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-2);
+  cursor: pointer;
+  position: relative;
+  top: 3px;
+  transition: all 0.18s;
+}
+
+.check-row input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check-row input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px; top: 1px;
+  width: 5px; height: 9px;
+  border: 2px solid #0b0b0f;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.check-row label {
+  font-size: 0.77rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1.7;
+}
+
+.check-row label strong { color: var(--text); font-weight: 500; }
+
+.dl-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+}
+
+.btn-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 24px;
+  background: var(--accent);
+  color: #0b0b0f;
+  border: none;
+  border-radius: 7px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+
+.btn-dl:hover:not(.locked) {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(232,184,109,0.28);
+}
+
+.btn-dl.locked {
+  background: var(--surface-2);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.dl-status {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  transition: color 0.3s;
+}
+
+.dl-status.go { color: var(--success); }
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center;
+  padding: 28px 0 10px;
+  font-size: 0.64rem;
+  color: var(--text-dim);
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="disc-wrap">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <circle cx="40" cy="40" r="38" fill="#13131a" stroke="#2a2a38" stroke-width="1.5"/>
+        <circle cx="40" cy="40" r="34" fill="none" stroke="#1f1f2c" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="30" fill="none" stroke="#1f1f2c" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="26" fill="none" stroke="#1f1f2c" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="22" fill="none" stroke="#1f1f2c" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="18" fill="none" stroke="#1f1f2c" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="14" fill="#e8b86d"/>
+        <circle cx="40" cy="40" r="9"  fill="rgba(0,0,0,0.18)"/>
+        <text x="40" y="38.5" text-anchor="middle" font-family="serif" font-size="4.5" font-weight="bold" fill="rgba(0,0,0,0.6)">KYKAS</text>
+        <text x="40" y="43.5" text-anchor="middle" font-family="serif" font-size="3.5" fill="rgba(0,0,0,0.5)">DISCS</text>
+        <circle cx="40" cy="40" r="3"  fill="#0b0b0f"/>
+      </svg>
+    </div>
+    <h1>Kykas <em>Discs</em></h1>
+    <p class="header-sub">
+      Minecraft Modification
+      <span></span>
+      Version 1.0 Test Build
+      <span></span>
+      .jar Download
+    </p>
+  </header>
+
+  <!-- TERMS + PRIVACY CARD -->
+  <div class="card">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab(this,'terms')">§ Terms of Use</button>
+      <button class="tab-btn"        onclick="switchTab(this,'privacy')">§ Privacy Policy</button>
+    </div>
+
+    <!-- ═══════════════ TERMS OF USE ═══════════════ -->
+    <div id="terms" class="tab-pane active">
+      <p class="doc-title">Terms of Use</p>
+      <p class="doc-meta">Last Updated: June 3, 2026 &nbsp;·&nbsp; Effective Immediately Upon Download</p>
+
+      <div class="doc-section">
+        <h3>1. Acceptance of Terms</h3>
+        <p>By downloading, installing, copying, accessing, launching, or otherwise using Kykas Discs (hereinafter referred to as the "Software"), you ("User," "you," or "your") acknowledge that you have carefully read, fully understood, and expressly agree to be legally bound by these Terms of Use ("Terms"), including all policies, guidelines, and supplementary documents incorporated herein by reference, as may be amended from time to time. These Terms constitute a valid, legally binding, and enforceable contract between you and the developer of Kykas Discs ("Developer," "we," "us," or "our").</p>
+        <p>IF YOU DO NOT AGREE TO THESE TERMS IN THEIR ENTIRETY, YOU MUST IMMEDIATELY CEASE ANY DOWNLOAD, INSTALLATION, OR USE OF THE SOFTWARE AND PERMANENTLY DELETE ANY COPIES IN YOUR POSSESSION OR CONTROL. Your continued download, installation, storage, or use of the Software at any point after being presented with these Terms constitutes your irrevocable acceptance thereof.</p>
+        <p>If you are accepting these Terms on behalf of a company, organisation, educational institution, or other legal entity, you represent and warrant that you have full authority to bind such entity to these Terms, and all references to "you" or "your" shall be construed to refer to such entity. If you do not possess such authority, you are not authorised to accept these Terms or use the Software on behalf of that entity.</p>
+        <p>The Developer reserves the right to amend, supplement, or otherwise modify these Terms at any time. Continued use of the Software after any such modification constitutes acceptance of the revised Terms. It is your responsibility to review these Terms periodically.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>2. Definitions</h3>
+        <p>For the purposes of these Terms, the following capitalised terms shall have the meanings set out below:</p>
+        <p><strong>"Software"</strong> means the Kykas Discs Minecraft modification, including all compiled Java bytecode, assets, configuration files, metadata, documentation, and any updates, patches, hot-fixes, or successor releases thereto, delivered in Java Archive (.jar) format.</p>
+        <p><strong>"Third-Party Audio Content"</strong> means any and all audio works, including but not limited to music compositions, sound recordings, ambient sounds, dialogue recordings, or other auditory material encoded in the OGG Vorbis format or any other format and bundled within the Software, which are authored by, owned by, or licensed from parties other than the Developer.</p>
+        <p><strong>"Minecraft"</strong> means the video game of that name developed and published by Mojang Studios, a wholly owned subsidiary of Microsoft Corporation. References to Minecraft in these Terms do not imply any affiliation, endorsement, collaboration, or sponsorship by Mojang Studios or Microsoft Corporation.</p>
+        <p><strong>"Modification" or "Mod"</strong> means a user-created or third-party-created software component designed to extend, alter, replace, or add functionality to the base Minecraft game.</p>
+        <p><strong>"Personal Use"</strong> means non-commercial use of the Software solely for your own private entertainment on personal computing devices that you own or lawfully control, on a private multiplayer server where all participants have each individually obtained the Software through authorised means.</p>
+        <p><strong>"Distribution"</strong> means any act by which the Software, or any constituent part thereof—including but not limited to any extracted or derived Third-Party Audio Content—is made available to one or more third parties by any method or medium, whether for consideration or free of charge, including uploading, posting, sharing via hyperlink, transmitting by email or messaging application, making available via cloud storage, providing on physical media, or any equivalent act.</p>
+        <p><strong>"Derivative Work"</strong> means any work that is based upon the Software and which, if prepared without the Developer's authorisation, would constitute copyright infringement, including but not limited to translations, adaptations, modified versions, and compilations incorporating the Software.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>3. Grant of Licence</h3>
+        <p>Subject to your strict and ongoing compliance with all terms and conditions set forth herein, the Developer hereby grants you a limited, personal, non-exclusive, non-transferable, non-sublicensable, revocable, royalty-free licence to download, install, and execute the Software solely for Personal Use in conjunction with a lawfully obtained, unmodified or otherwise legitimately modified copy of Minecraft. This licence expressly does not constitute, imply, or grant any transfer of ownership, proprietary interest, or intellectual property rights in or to the Software or any component thereof.</p>
+        <p>The rights granted under this licence are strictly conditioned upon your complete and continuous compliance with these Terms. Any single act of non-compliance automatically and immediately revokes this licence, without requirement for notice from the Developer, and any further use of the Software following such revocation constitutes infringement of the Developer's intellectual property rights.</p>
+        <p>No other rights are granted except those explicitly stated herein. All rights not expressly licensed remain fully reserved by the Developer and the respective owners of Third-Party Audio Content included within the Software.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>4. Prohibited Uses and Restrictions</h3>
+        <p>You acknowledge, covenant, and irrevocably agree that you shall not, under any circumstance, for any purpose, and regardless of whether compensation is involved:</p>
+        <ul>
+          <li>Distribute, reproduce, publish, upload, post, transmit, disseminate, or otherwise make the Software or any portion thereof—including individual audio files, graphics, or code components—available to any third party through any channel, platform, service, or medium whatsoever;</li>
+          <li>Sell, rent, lease, lend, loan, sublicense, assign, transfer, pledge, or otherwise commercially exploit the Software or any rights therein;</li>
+          <li>Modify, translate, adapt, enhance, or create Derivative Works based upon the Software, except to the limited extent explicitly and unambiguously permitted under applicable mandatory law notwithstanding contractual restriction;</li>
+          <li>Reverse-engineer, decompile, disassemble, or attempt to derive the source code, underlying ideas, algorithms, or structure of the Software, except to the limited extent permitted under applicable law that cannot be excluded by contract;</li>
+          <li>Remove, obscure, alter, or modify any copyright notices, trademark identifiers, author attribution, proprietary legends, or other intellectual property markings embedded in or displayed by the Software;</li>
+          <li>Use the Software in any manner that violates applicable local, national, or international law, regulation, or treaty;</li>
+          <li>Use the Software to infringe, misappropriate, or otherwise violate the intellectual property rights, privacy rights, personality rights, or other rights of any person or entity;</li>
+          <li>Incorporate the Software or any part thereof into any compilation, package, distribution, or third-party application without prior express written consent of the Developer;</li>
+          <li>Use the Software to generate or facilitate harassment, hate speech, defamatory content, or content that promotes unlawful discrimination;</li>
+          <li>Circumvent or attempt to circumvent any technical protection measures incorporated in or associated with the Software;</li>
+          <li>Make the Software available as part of a "modpack" or similar bundled distribution without prior express written authorisation from the Developer, given the presence of Third-Party Audio Content.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section">
+        <h3>5. Third-Party Audio Content — Strict No-Distribution Policy</h3>
+        <div class="alert-box">
+          <p>⚠ NOTICE: This Software contains third-party audio recordings in OGG format. Distribution of this Software to any third party is strictly and unconditionally prohibited. Violation may constitute copyright infringement under applicable law.</p>
+        </div>
+        <p>The Software incorporates Third-Party Audio Content, namely audio recordings encoded in the OGG Vorbis format, which are the sole and exclusive property of their respective authors, composers, performers, producers, and rights-holders (collectively, "Audio Rights Holders"). These audio works are included within the Software subject to licensing terms or conditions that expressly restrict, limit, or prohibit redistribution.</p>
+        <p>By reason of the inclusion of this Third-Party Audio Content, you are hereby expressly, unconditionally, and irrevocably prohibited from distributing the Software, in whole or in part, to any third party whatsoever. This absolute prohibition applies, without limitation, regardless of:</p>
+        <ul>
+          <li>Whether any consideration, payment, or compensation is sought or received;</li>
+          <li>Whether attribution or credit to the original authors or rights-holders is provided;</li>
+          <li>Whether you believe or assert that your distribution constitutes "fair use," "fair dealing," or any equivalent doctrine under applicable law;</li>
+          <li>Whether the intended recipients already possess the original recordings from which the Third-Party Audio Content may derive;</li>
+          <li>Whether the distribution is claimed to be for personal, educational, informational, non-commercial, or charitable purposes;</li>
+          <li>Whether the distribution is incidental, de minimis, or forms only a minor part of a larger work;</li>
+          <li>The geographic location, jurisdiction, or nationality of the distributor or the recipient;</li>
+          <li>The technical medium or method of distribution, whether digital download, streaming, physical media, peer-to-peer transfer, or otherwise.</li>
+        </ul>
+        <p>You further acknowledge and agree that:</p>
+        <ul>
+          <li>The Developer makes no representation, warranty, or guarantee that any specific item of Third-Party Audio Content is licensed under terms that would permit use beyond your Personal Use of the Software as a whole;</li>
+          <li>You are solely and exclusively responsible for independently verifying that your specific use of the Software, including any Personal Use, complies with all applicable third-party licences, terms of service, and intellectual property laws;</li>
+          <li>The Developer shall have no liability whatsoever arising from your reliance on any representation or assumption regarding the licensing status of Third-Party Audio Content;</li>
+          <li>Unauthorised Distribution of the Software containing Third-Party Audio Content may constitute civil copyright infringement and/or criminal offences under applicable laws, including without limitation the Digital Millennium Copyright Act (17 U.S.C. § 1201 et seq.), the EU Copyright Directive (2001/29/EC), the UK Copyright, Designs and Patents Act 1988, and equivalent legislation in other jurisdictions;</li>
+          <li>The Developer reserves the right to take all available legal and equitable remedies against any person who engages in unauthorised Distribution of the Software or its components.</li>
+        </ul>
+        <p>If you believe any Third-Party Audio Content contained within the Software infringes upon your copyright or the copyright of another party, please contact the Developer promptly. The Developer commits to investigating all good-faith infringement notices and taking appropriate remedial action, including prompt removal of any content found to be infringing, in accordance with applicable law.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>6. Intellectual Property Rights</h3>
+        <p>The Software and all original elements thereof—including but not limited to source code, compiled code, graphical assets, sound design (excluding Third-Party Audio Content), written documentation, configuration files, and any other creative works authored by the Developer—are protected by copyright, trade secret, and other applicable intellectual property laws. All rights therein that are not expressly licensed to you under these Terms are and shall remain exclusively reserved to the Developer.</p>
+        <p>You acknowledge unequivocally that these Terms do not constitute, and shall not be construed to constitute, a sale, transfer, assignment, or conveyance of title, ownership, or any proprietary interest in the Software or any part thereof. Upon any termination or expiry of these Terms, no rights whatsoever in the Software shall remain vested in you.</p>
+        <p>All Third-Party Audio Content included in the Software remains the exclusive intellectual property of the respective Audio Rights Holders. Nothing in these Terms grants, transfers, or implies any licence, right, or interest in such Third-Party Audio Content beyond that which is strictly required for Personal Use of the complete Software as a unified work.</p>
+        <p>The name "Kykas Discs," any associated logos, trade dress, branding elements, and distinctive presentation of the Software are the property of the Developer. You may not use any such identifiers in any manner that would imply affiliation with, endorsement by, or sponsorship by the Developer, without prior express written consent.</p>
+        <p>If you believe that any content in the Software infringes your intellectual property rights, please contact the Developer with a detailed description of the alleged infringement, supporting evidence of your ownership, and your contact information. The Developer will respond to valid notices in accordance with applicable law.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>7. Relationship with Minecraft and Mojang Studios</h3>
+        <p>Kykas Discs is a fan-made, unofficial modification for Minecraft. The Software is not developed, endorsed, sponsored, approved, or affiliated with Mojang Studios or Microsoft Corporation in any way. "Minecraft" is a registered trademark of Mojang Studios. References to Minecraft in this document are purely descriptive and are not intended to imply any official relationship.</p>
+        <p>Your use of the Software is also subject to the Minecraft End User Licence Agreement and Mojang's Usage Guidelines, as published and updated from time to time by Mojang Studios. You are solely responsible for ensuring that your use of the Software alongside Minecraft complies with all applicable Mojang and Microsoft policies. In the event of any conflict between these Terms and the Minecraft EULA that relates solely to the interaction of the Software with Minecraft, the Minecraft EULA shall govern to the extent of such conflict.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>8. Disclaimer of Warranties</h3>
+        <p class="caps">THE SOFTWARE IS PROVIDED STRICTLY ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT ANY REPRESENTATION, WARRANTY, GUARANTEE, OR CONDITION OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, THE DEVELOPER EXPRESSLY DISCLAIMS ALL WARRANTIES AND CONDITIONS, INCLUDING WITHOUT LIMITATION: (A) ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT; (B) ANY WARRANTIES OR CONDITIONS ARISING OUT OF COURSE OF DEALING, COURSE OF PERFORMANCE, OR USAGE OF TRADE; (C) ANY WARRANTIES THAT THE SOFTWARE WILL OPERATE WITHOUT INTERRUPTION, ERROR, DEFECT, VIRUS, MALWARE, OR HARMFUL CODE; (D) ANY WARRANTIES REGARDING THE ACCURACY, COMPLETENESS, RELIABILITY, TIMELINESS, OR SUITABILITY OF THE SOFTWARE OR ANY INFORMATION ASSOCIATED THEREWITH; (E) ANY WARRANTIES AS TO COMPATIBILITY WITH ANY SPECIFIC VERSION OF MINECRAFT, JAVA RUNTIME ENVIRONMENT, OPERATING SYSTEM, HARDWARE, OR OTHER SOFTWARE; AND (F) ANY WARRANTIES THAT DEFECTS WILL BE CORRECTED.</p>
+        <p>Certain jurisdictions do not permit the exclusion of implied warranties. To the extent any such implied warranty cannot be excluded, its scope and duration shall be limited to the minimum required by applicable law.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>9. Limitation of Liability</h3>
+        <p class="caps">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE DEVELOPER, NOR ANY CONTRIBUTOR, COLLABORATOR, LICENSOR, OR OTHER ASSOCIATED PARTY, BE LIABLE FOR ANY LOSS, DAMAGE, COST, OR EXPENSE OF ANY NATURE WHATSOEVER, WHETHER DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, PUNITIVE, ENHANCED, OR OTHERWISE, INCLUDING WITHOUT LIMITATION: LOSS OF PROFITS; LOSS OF REVENUE; LOSS OF DATA; LOSS OF GOODWILL; BUSINESS INTERRUPTION; LOSS OF ANTICIPATED SAVINGS; DAMAGE TO HARDWARE OR SOFTWARE; OR ANY OTHER COMMERCIAL OR ECONOMIC LOSS — HOWEVER CAUSED AND UNDER ANY THEORY OF LIABILITY (INCLUDING CONTRACT, TORT, STRICT LIABILITY, NEGLIGENCE, OR OTHERWISE), ARISING OUT OF OR IN CONNECTION WITH THESE TERMS, THE SOFTWARE, OR YOUR USE OF OR INABILITY TO USE THE SOFTWARE, EVEN IF THE DEVELOPER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSS OR DAMAGE.</p>
+        <p class="caps">THE DEVELOPER'S TOTAL AGGREGATE LIABILITY TO YOU FOR ALL CLAIMS, DAMAGES, LOSSES, AND CAUSES OF ACTION ARISING OUT OF OR RELATING TO THESE TERMS OR THE SOFTWARE SHALL NOT EXCEED THE GREATER OF: (A) THE TOTAL AMOUNT YOU PAID FOR THE SOFTWARE (IF ANY); OR (B) FIVE EUROS (€5.00).</p>
+        <p>Some jurisdictions do not permit certain liability exclusions or limitations. In those jurisdictions, the Developer's liability shall be limited to the minimum extent permitted by applicable law.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>10. Indemnification</h3>
+        <p>You agree, at your own expense, to fully defend, indemnify, and hold harmless the Developer, and each of their respective successors, assigns, officers, directors, employees, agents, contractors, and licensors, from and against any and all third-party claims, proceedings, demands, liabilities, damages, losses, penalties, fines, costs, and expenses (including reasonable legal fees and disbursements) that arise out of or relate to: (a) your breach of these Terms or any representation or warranty made herein; (b) your use or misuse of the Software in violation of these Terms or any applicable law; (c) your actual or alleged infringement or misappropriation of any intellectual property rights belonging to any third party; (d) your unauthorised Distribution of the Software, any component thereof, or any Third-Party Audio Content; (e) any claim by a third party that results from your negligence or wilful misconduct; or (f) your violation of the rights of any third party, including privacy rights, personality rights, or contractual rights.</p>
+        <p>The Developer reserves the right, at their own cost, to assume exclusive control of the defence and settlement of any matter subject to indemnification. You agree to cooperate fully and in good faith with the Developer's defence of any such claim.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>11. Updates, Modifications, and Discontinuation</h3>
+        <p>The Developer reserves the absolute right, exercisable at any time and for any reason or no reason, to modify, update, correct, enhance, disable, or permanently discontinue the Software, or any feature, function, or component thereof, without prior notice to you and without incurring any liability whatsoever. The Developer is under no obligation to maintain, support, update, or continue providing the Software.</p>
+        <p>Updates, if any, may change or remove functionality that you rely upon. Your continued use of the Software following any update constitutes your acceptance of that updated version and any modifications to these Terms made in connection therewith. You are solely responsible for reviewing these Terms upon each use of the Software to confirm awareness of any changes.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>12. Term and Termination</h3>
+        <p>These Terms shall enter into force upon your first download, installation, or use of the Software and shall continue in effect until terminated. The Developer may terminate these Terms and revoke your licence at any time and for any reason, with or without cause and with or without notice.</p>
+        <p>Your licence to use the Software terminates automatically and without notice upon: (a) any breach by you of any provision of these Terms; (b) your acquisition, distribution, or possession of the Software in violation of these Terms; or (c) any act by you that infringes the intellectual property rights of the Developer or any Audio Rights Holder.</p>
+        <p>Upon termination of these Terms for any reason: (a) all licences and rights granted to you hereunder immediately and irrevocably cease; (b) you must immediately and permanently delete all copies of the Software from all devices and storage media in your possession, custody, or control; and (c) you must cease all use of the Software forthwith.</p>
+        <p>The following sections shall survive any termination or expiry of these Terms: 5, 6, 8, 9, 10, 13, 14, and 15.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>13. Governing Law</h3>
+        <p>These Terms and any dispute, controversy, claim, or question of any kind arising out of or in connection with these Terms, the Software, or the subject matter hereof (including disputes regarding their existence, validity, interpretation, performance, breach, or termination) shall be governed by and construed exclusively in accordance with the laws of the jurisdiction in which the Developer is permanently resident, without reference to any choice-of-law or conflict-of-law rules or provisions that would cause the application of any other jurisdiction's laws.</p>
+        <p>You hereby irrevocably and unconditionally submit to the exclusive jurisdiction of the competent courts and tribunals of the Developer's jurisdiction for the resolution of all such disputes, and waive any objection based on improper venue or inconvenient forum.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>14. Dispute Resolution</h3>
+        <p><strong>Informal Resolution.</strong> Prior to initiating any formal legal proceeding, the parties agree to make diligent, good-faith efforts to resolve any dispute informally. The party with a grievance shall provide written notice of the dispute to the other party, describing the nature of the dispute and the relief sought. The parties shall attempt in good faith to resolve the dispute through direct negotiation within thirty (30) calendar days of receipt of such notice.</p>
+        <p><strong>Binding Arbitration.</strong> If a dispute cannot be resolved informally within the prescribed period, either party may elect to submit the dispute to final and binding arbitration. Arbitration shall be conducted by a mutually agreed single arbitrator, applying the substantive law identified in Section 13. The arbitration shall be conducted in the language of the Developer's jurisdiction, and the arbitrator's decision shall be final, conclusive, and binding upon both parties, with no right of further appeal except as provided by mandatory law.</p>
+        <p><strong>Equitable Relief.</strong> Notwithstanding the foregoing, nothing in this Section shall prevent either party from seeking urgent or emergency injunctive relief, specific performance, or other equitable remedies from a court of competent jurisdiction to prevent actual or imminent infringement, misappropriation, or unlawful disclosure of intellectual property rights or confidential information.</p>
+        <p><strong>No Class Actions.</strong> To the maximum extent permitted by applicable law, all claims must be brought on an individual basis, and neither party may bring or participate in any class action, collective proceeding, or representative action in connection with these Terms or the Software.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>15. General Provisions</h3>
+        <p><strong>Severability.</strong> If any provision of these Terms is held by a court or arbitrator of competent jurisdiction to be invalid, illegal, void, or unenforceable under applicable law, that provision shall be severed and the remaining provisions shall continue in full force and effect, to the extent that they can reasonably be given effect without the severed provision. The invalid provision shall be reformed to the minimum degree necessary to make it valid and enforceable.</p>
+        <p><strong>Entire Agreement.</strong> These Terms, read together with the Privacy Policy and any other documents expressly incorporated herein by reference, constitute the complete and exclusive agreement between you and the Developer with respect to the Software, and supersede all prior or contemporaneous negotiations, representations, warranties, agreements, understandings, or discussions, whether oral or written, between the parties relating to the subject matter hereof.</p>
+        <p><strong>No Waiver.</strong> The failure by the Developer to enforce any right or provision of these Terms on any occasion shall not be construed as a waiver of that right or provision, nor shall any single or partial exercise of any right or remedy preclude any other or further exercise of that right or remedy. All waivers must be in writing and signed by an authorised representative of the Developer to be effective.</p>
+        <p><strong>Assignment.</strong> You may not assign, transfer, delegate, or sublicense any of your rights or obligations under these Terms, whether by operation of law or otherwise, without the prior express written consent of the Developer. The Developer may freely assign these Terms and all rights hereunder. Any purported assignment in violation of this provision shall be null and void.</p>
+        <p><strong>Force Majeure.</strong> The Developer shall not be held responsible or liable for any delay or failure in performance arising from causes beyond their reasonable control, including without limitation acts of God, natural disasters, governmental actions, civil unrest, pandemics, or internet infrastructure failures.</p>
+        <p><strong>Contact.</strong> If you have any questions or concerns about these Terms, you may contact the Developer through the official channels associated with the Kykas Discs project.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════ PRIVACY POLICY ═══════════════ -->
+    <div id="privacy" class="tab-pane">
+      <p class="doc-title">Privacy Policy</p>
+      <p class="doc-meta">Last Updated: June 3, 2026 &nbsp;·&nbsp; Effective Immediately Upon Download</p>
+
+      <div class="doc-section">
+        <h3>1. Introduction and Scope</h3>
+        <p>This Privacy Policy ("Policy") describes the information practices of the developer of Kykas Discs ("Developer," "we," "us," or "our") in connection with the Kykas Discs Software and any associated websites, communications, or support services (collectively, the "Services"). This Policy sets out what information we collect, why we collect it, how we use and protect it, with whom we may share it, and what choices you have with respect to your information.</p>
+        <p>By downloading, installing, or using the Software, you acknowledge that you have read and understood this Privacy Policy and agree to the data practices described herein. If you do not agree to this Policy, you must not use the Software. This Policy is incorporated by reference into the Terms of Use for the Software and should be read alongside those Terms.</p>
+        <p>We are committed to processing any personal information we receive in accordance with applicable data protection and privacy laws, including where applicable the General Data Protection Regulation (EU) 2016/679 ("GDPR"), the UK General Data Protection Regulation, the California Consumer Privacy Act as amended by the California Privacy Rights Act ("CCPA/CPRA"), and equivalent legislation in other jurisdictions.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>2. What the Software Does Not Collect</h3>
+        <p>Kykas Discs is a client-side Minecraft modification distributed as a standalone .jar file. In its normal, intended operation, the Software does not independently establish network connections to servers operated by the Developer, does not transmit telemetry data, gameplay statistics, or personal information to any Developer-controlled system, and does not include any embedded analytics, advertising SDKs, crash-reporting modules, or remote-logging components that the Developer has intentionally introduced.</p>
+        <p>You acknowledge, however, that the Minecraft game client itself, the Java Runtime Environment, your operating system, and any third-party mods or launchers operating alongside the Software may independently collect, process, or transmit information about your device or usage in accordance with their own respective privacy policies, over which the Developer has no control or responsibility.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>3. Information You Voluntarily Provide</h3>
+        <p>Should you choose to contact the Developer for any reason—including to report bugs, request features, seek support, provide feedback, or engage in any other communication through any channel such as email, issue trackers, community forums, social media platforms, or any future official contact form—you may voluntarily disclose personal information including your name, username, email address, and the content of your message or communication.</p>
+        <p>We collect and use this voluntarily provided information solely for the following purposes:</p>
+        <ul>
+          <li>To respond to and address your specific enquiry, request, or report;</li>
+          <li>To provide technical assistance and resolve issues with the Software;</li>
+          <li>To improve the quality, stability, and features of the Software based on user feedback;</li>
+          <li>To send administrative communications regarding the Software, including critical updates, security notices, or changes to these policies;</li>
+          <li>To maintain records of communications for quality assurance, abuse prevention, and legal compliance purposes;</li>
+          <li>To identify and respond to duplicate or abusive contact attempts.</li>
+        </ul>
+        <p>We will not use information you provide voluntarily for any purpose materially different from those listed above without seeking your prior, informed consent.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>4. Information Collected Through Third-Party Distribution Platforms</h3>
+        <p>If you obtain the Software through a third-party distribution platform—including but not limited to Modrinth, CurseForge, GitHub Releases, or any other platform on which the Software may be made available—that platform may independently and automatically collect information about you in connection with your download. Such information may include your IP address, device identifier, browser or client type, operating system, geographic region, and download history.</p>
+        <p>The collection and processing of this data by third-party platforms is entirely subject to each platform's own privacy policy and terms of service. The Developer does not control, receive, have access to, or bear responsibility for information collected by such platforms. You are encouraged to review the privacy policies of any platform through which you obtain the Software before initiating a download.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>5. Legal Basis for Processing (GDPR Applicability)</h3>
+        <p>To the extent that applicable data protection law requires us to identify a legal basis for processing personal information, we rely on the following bases:</p>
+        <ul>
+          <li><strong>Consent (Article 6(1)(a) GDPR):</strong> Where you have given us your explicit consent to process your information for a specific purpose, such as subscribing to update notifications.</li>
+          <li><strong>Legitimate Interests (Article 6(1)(f) GDPR):</strong> Where processing is necessary for the purposes of the Developer's legitimate interests—such as maintaining communication records, improving the Software, and preventing abuse—except where those interests are overridden by your fundamental rights and freedoms.</li>
+          <li><strong>Legal Obligation (Article 6(1)(c) GDPR):</strong> Where processing is necessary to comply with applicable legal obligations, including responding to lawful requests from competent authorities.</li>
+          <li><strong>Contractual Performance (Article 6(1)(b) GDPR):</strong> Where processing is necessary to perform the agreement reflected in these Terms, such as providing you with the Software and related support.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section">
+        <h3>6. How We Use Collected Information</h3>
+        <p>Any personal information received by the Developer through voluntary communications or other legitimate means may be used for the following purposes:</p>
+        <ul>
+          <li>Providing, maintaining, and improving the Software and related support services;</li>
+          <li>Communicating with you in response to enquiries or support requests;</li>
+          <li>Sending you administrative messages, policy updates, or important notices regarding the Software;</li>
+          <li>Monitoring and analysing patterns in communications to identify recurring issues or areas for improvement;</li>
+          <li>Detecting, investigating, and preventing fraud, abuse, or other harmful activities directed at the Developer or users of the Software;</li>
+          <li>Enforcing the Terms of Use and this Privacy Policy;</li>
+          <li>Complying with applicable legal obligations and responding to lawful requests from governmental or judicial authorities;</li>
+          <li>Protecting the legal rights, property, and safety of the Developer, users, and the general public.</li>
+        </ul>
+        <p>We do not use personal information for automated decision-making or profiling that produces legal or similarly significant effects on you.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>7. Third-Party Audio Content and Intellectual Property Notice</h3>
+        <p>As described in the Terms of Use, the Software incorporates Third-Party Audio Content in OGG Vorbis format that is owned by third-party rights-holders. This Privacy Policy does not affect or limit the intellectual property restrictions applicable to such Third-Party Audio Content.</p>
+        <p>You acknowledge and agree that your use of the Software does not grant you any rights to reproduce, distribute, publicly perform, publicly display, or create derivative works from any Third-Party Audio Content, and that the Audio Rights Holders retain all rights to their respective works. The inclusion of Third-Party Audio Content within the Software's .jar archive is a technical necessity of the modification format and does not imply any licence to that content beyond what is required for Personal Use of the Software as a unified work.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>8. Disclosure of Information to Third Parties</h3>
+        <p>We do not sell, rent, trade, barter, or otherwise transfer your personal information to third parties for their own commercial, marketing, or advertising purposes. We may share your information in the following strictly limited circumstances:</p>
+        <p><strong>Service Providers.</strong> We may engage trusted third-party service providers who perform services on our behalf, such as email hosting providers or file hosting services. These providers are authorised to access your information only to the extent necessary to perform their contracted services and are contractually prohibited from using it for any other purpose.</p>
+        <p><strong>Legal and Regulatory Compliance.</strong> We may disclose your information if required to do so by applicable law, court order, subpoena, regulatory directive, or other binding legal process, or if we reasonably and in good faith believe that disclosure is necessary to: (a) comply with a legal obligation; (b) protect and defend the legal rights and property of the Developer; (c) prevent, detect, or investigate suspected illegal activity, fraud, or misuse of the Software; (d) protect the personal safety of users of the Software or members of the public; or (e) protect the Developer against legal liability.</p>
+        <p><strong>Business Transitions.</strong> In the event of a sale, merger, acquisition, restructuring, dissolution, bankruptcy, or other corporate transaction or proceeding involving the Developer or the Software project, personal information held by the Developer may be transferred to a successor entity as part of the transaction. In such a case, the Developer will provide reasonable notice to affected individuals and ensure that the receiving party commits to protecting personal information under terms no less protective than this Policy.</p>
+        <p><strong>Aggregated or Anonymised Data.</strong> We may disclose aggregated statistical information or information from which all personally identifying details have been irreversibly removed, for purposes such as research, industry reporting, or service improvement. Such information cannot reasonably be used to identify any individual.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>9. Data Security</h3>
+        <p>We take the security of any personal information we hold seriously and implement reasonable and appropriate technical and organisational measures to protect it against unauthorised access, accidental loss, alteration, disclosure, or destruction. These measures include the use of industry-standard security protocols for any communication channels and storage systems through which personal information may be processed.</p>
+        <p>Despite our best efforts, no data transmission over the internet and no method of electronic data storage can be guaranteed to be completely secure. We cannot warrant or guarantee the absolute security of any information you transmit to us or that we store. You acknowledge and accept this inherent risk. In the event of a security incident that affects your personal information and requires notification under applicable law, we will notify you promptly and in accordance with our legal obligations.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>10. Data Retention</h3>
+        <p>We retain personal information only for as long as reasonably necessary to fulfil the purposes for which it was collected, as described in this Policy, or as required by applicable law. Specifically:</p>
+        <ul>
+          <li>Communications related to technical support or bug reports are retained for as long as the issue remains active and for a reasonable period thereafter for quality assurance purposes;</li>
+          <li>Communications relevant to a potential or ongoing legal dispute, enforcement action, or regulatory enquiry are retained for as long as the matter requires;</li>
+          <li>Where we are subject to legal retention obligations, we will retain information for the period required by applicable law.</li>
+        </ul>
+        <p>When personal information is no longer required, we will take reasonable steps to securely delete, destroy, or anonymise it in accordance with applicable law and good data management practice.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>11. Children's Privacy</h3>
+        <p>The Software is not directed at, designed for, or intended to be used by children under the age of thirteen (13), or the higher age of digital consent applicable in your jurisdiction (e.g., sixteen (16) in certain European Union member states). We do not knowingly solicit or collect personal information from children below the applicable age threshold.</p>
+        <p>If you are a parent or legal guardian and believe that your child has provided personal information to us without your consent, please contact us immediately through the official channels associated with the Kykas Discs project. Upon receiving such notification, we will take prompt and appropriate steps to investigate and, if confirmed, to delete the relevant information without undue delay.</p>
+        <p>If we discover that we have inadvertently collected personal information from a child below the applicable age of consent without verifiable parental or guardian authorisation, we will delete that information as quickly as practicable.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>12. International Data Transfers</h3>
+        <p>If you are located in a jurisdiction outside of the Developer's primary place of residence or operation, please be aware that any personal information you transmit to us in connection with voluntary communications may be transferred to, stored in, and processed in a different country or jurisdiction. Different countries have different laws regarding data protection, and the data protection laws in the Developer's jurisdiction may differ from those of your own.</p>
+        <p>Where we transfer personal information internationally, we will take appropriate steps to ensure that such transfers comply with applicable data protection laws, including by relying on adequacy decisions, implementing standard contractual clauses, or other recognised transfer mechanisms where required.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>13. Your Privacy Rights</h3>
+        <p>Depending on your jurisdiction and applicable law, you may have some or all of the following rights with respect to personal information we hold about you:</p>
+        <ul>
+          <li><strong>Right of Access:</strong> The right to request a copy of the personal information we hold about you, along with information about how we use it;</li>
+          <li><strong>Right to Rectification:</strong> The right to request correction of any inaccurate or incomplete personal information we hold about you;</li>
+          <li><strong>Right to Erasure ("Right to be Forgotten"):</strong> The right to request deletion of personal information we hold about you, subject to certain legal exceptions;</li>
+          <li><strong>Right to Restriction of Processing:</strong> The right to request that we restrict the processing of your personal information in certain circumstances;</li>
+          <li><strong>Right to Data Portability:</strong> The right to receive personal information you have provided to us in a structured, commonly used, machine-readable format, and to transmit it to another controller;</li>
+          <li><strong>Right to Object:</strong> The right to object to our processing of your personal information based on legitimate interests;</li>
+          <li><strong>Right to Withdraw Consent:</strong> Where processing is based on your consent, the right to withdraw that consent at any time without affecting the lawfulness of processing based on consent prior to withdrawal;</li>
+          <li><strong>Right to Lodge a Complaint:</strong> The right to lodge a complaint with the relevant supervisory authority or data protection regulator in your jurisdiction.</li>
+        </ul>
+        <p>To exercise any of these rights, please contact the Developer through the official channels associated with the Kykas Discs project. We will respond to all valid requests within the timeframes required by applicable law. We may require you to verify your identity before fulfilling a request to ensure we do not disclose information to unauthorised parties.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>14. California Privacy Rights (CCPA / CPRA)</h3>
+        <p>If you are a resident of the State of California, you have additional rights under the California Consumer Privacy Act of 2018, as amended by the California Privacy Rights Act of 2020 (together, "CCPA/CPRA"), including:</p>
+        <ul>
+          <li>The right to know what categories and specific pieces of personal information we have collected about you in the preceding twelve (12) months, the sources from which that information was collected, the purposes for collecting it, and the categories of third parties with whom it has been shared;</li>
+          <li>The right to request deletion of personal information we have collected from you, subject to applicable legal exceptions;</li>
+          <li>The right to correct inaccurate personal information we hold about you;</li>
+          <li>The right to opt out of the "sale" or "sharing" of your personal information, as those terms are defined under the CCPA/CPRA;</li>
+          <li>The right to limit the use of sensitive personal information to those purposes authorised by law;</li>
+          <li>The right to non-discrimination for exercising any of your CCPA/CPRA rights.</li>
+        </ul>
+        <p>The Developer does not sell or share personal information as those terms are defined under the CCPA/CPRA. To submit a CCPA/CPRA request, please contact the Developer through official channels. California residents may also designate an authorised agent to submit requests on their behalf.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>15. Links and Third-Party Services</h3>
+        <p>The Software or any communications associated with it may reference, link to, or integrate with third-party websites, platforms, services, or resources (such as Minecraft, Modrinth, GitHub, or community forums). These third-party services are independently operated and have their own separate and independent privacy policies, terms of service, and data practices. The Developer has no control over the content, data practices, or privacy practices of any third-party service and expressly disclaims all responsibility and liability therefor.</p>
+        <p>We strongly encourage you to review the privacy policies of all third-party services with which you interact in connection with the Software before providing any personal information to such services. The inclusion of a link or reference to a third-party service in connection with the Software does not constitute an endorsement, approval, or recommendation of that service's privacy practices.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>16. Cookies and Tracking (Associated Websites)</h3>
+        <p>The Software itself, as a .jar file, does not employ browser cookies, web beacons, pixel tags, local storage, session storage, or any equivalent browser-based tracking mechanisms. However, should the Developer operate or maintain any website or web-based portal associated with the Software, such website may use cookies and similar technologies to deliver and maintain its core functionality, remember your preferences, analyse traffic and usage patterns, and improve the user experience.</p>
+        <p>You may control cookie settings through your web browser's settings and preferences. Most browsers allow you to refuse all cookies, selectively accept certain cookies, or receive notifications when a cookie is being placed. Please note that disabling certain cookies may affect the availability or performance of features on any associated websites. For more information on managing cookies, please refer to your browser's documentation or a resource such as www.allaboutcookies.org.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>17. Changes to This Privacy Policy</h3>
+        <p>We reserve the right to update, revise, amend, or otherwise modify this Privacy Policy at any time, in our sole discretion, to reflect changes in our data practices, applicable law, the features of the Software, or other relevant circumstances. The date of the most recent revision will always be indicated at the top of this Policy.</p>
+        <p>For material changes to this Policy—meaning changes that significantly affect how we collect, use, or share your information—we will provide prominent notice to the extent reasonably practicable, which may include posting a notice on any associated website or communicating through other channels. Your continued use of the Software following notice of any change to this Policy constitutes your acceptance of the updated Policy. If you do not agree to the revised Policy, you must discontinue use of the Software.</p>
+      </div>
+
+      <div class="doc-section">
+        <h3>18. Contact Information</h3>
+        <p>If you have any questions, comments, concerns, or requests regarding this Privacy Policy or our data practices, or if you wish to exercise any of the rights described in this Policy, please contact the Developer through the official channels associated with the Kykas Discs project. We are committed to addressing your enquiry in a timely and transparent manner and to working with you to resolve any concern you may have about our handling of your personal information.</p>
+      </div>
+    </div>
+
+    <div class="scroll-hint">Scroll to read the full document before agreeing</div>
+  </div>
+
+  <!-- AGREEMENT SECTION -->
+  <div class="agree-card">
+    <h2>Download Agreement</h2>
+
+    <label class="check-row" id="rowTerms">
+      <input type="checkbox" id="chkTerms" onchange="onCheck()">
+      <span>I have read and agree to the <strong>Terms of Use</strong>, including the absolute prohibition on redistribution of this Software and its embedded third-party OGG audio content.</span>
+    </label>
+
+    <label class="check-row" id="rowPrivacy">
+      <input type="checkbox" id="chkPrivacy" onchange="onCheck()">
+      <span>I have read and agree to the <strong>Privacy Policy</strong> and consent to the data practices described therein.</span>
+    </label>
+
+    <div class="dl-row">
+      <a id="dlBtn" class="btn-dl locked" href="#" onclick="return tryDownload(event)">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.5 11L2.5 6.5h3.25V1.5h3.5V6.5H12.5L7.5 11z"/>
+          <rect x="1.5" y="12.25" width="12" height="1.5" rx="0.75"/>
+        </svg>
+        kykas-discs-1_0-TEST.jar
+      </a>
+      <span id="dlStatus" class="dl-status">Agree to both documents to unlock the download.</span>
+    </div>
+  </div>
+
+  <footer>
+    Kykas Discs is an unofficial fan modification and is not affiliated with, endorsed by,<br>
+    or connected to Mojang Studios or Microsoft Corporation in any way.<br>
+    Minecraft® is a registered trademark of Mojang Studios. All third-party audio content<br>
+    remains the property of its respective copyright holders.
+  </footer>
+</div>
+
+<script>
+  function switchTab(btn, id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function onCheck() {
+    const t = document.getElementById('chkTerms').checked;
+    const p = document.getElementById('chkPrivacy').checked;
+    const btn = document.getElementById('dlBtn');
+    const status = document.getElementById('dlStatus');
+    document.getElementById('rowTerms').classList.toggle('checked', t);
+    document.getElementById('rowPrivacy').classList.toggle('checked', p);
+
+    if (t && p) {
+      btn.classList.remove('locked');
+      btn.href = 'kykas-discs-1_0-TEST.jar';
+      btn.setAttribute('download', 'kykas-discs-1_0-TEST.jar');
+      status.textContent = '✓ Ready — your download will begin on click.';
+      status.classList.add('go');
+    } else {
+      btn.classList.add('locked');
+      btn.href = '#';
+      btn.removeAttribute('download');
+      status.classList.remove('go');
+      if (!t && !p) status.textContent = 'Agree to both documents to unlock the download.';
+      else if (!t) status.textContent = 'Please also agree to the Terms of Use.';
+      else         status.textContent = 'Please also agree to the Privacy Policy.';
+    }
+  }
+
+  function tryDownload(e) {
+    if (document.getElementById('dlBtn').classList.contains('locked')) {
+      e.preventDefault();
+      return false;
+    }
+    return true;
+  }
+</script>
+</body>
+</html>
